@@ -3,15 +3,22 @@ from fastapi import File, UploadFile, APIRouter, Depends, HTTPException
 import replicate
 from PIL import Image
 import io
+from dotenv import load_dotenv
+
+#env파일 같은 디렉토리에 둬야함
+load_dotenv()
+
 
 
 router = APIRouter(
     prefix="/model",
 )
-os.environ['REPLICATE_API_TOKEN'] = 'r8_EaWAGIzXS9LhNRQpS5IujWfhlnHQgUS3u1wLf'
 
 api_token = os.getenv('REPLICATE_API_TOKEN')
+if not api_token:
+    raise ValueError("REPLICATE_API_TOKEN is not set in environment variables")
 client = replicate.Client(api_token=api_token)
+
 
 @router.post("/transform/")
 async def image_transfer(file: UploadFile = File(...)):

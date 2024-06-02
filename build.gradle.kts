@@ -32,6 +32,11 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation ("org.springframework.boot:spring-boot-starter-web")
+    implementation ("com.fasterxml.jackson.core:jackson-databind")
+    implementation ("com.fasterxml.jackson.core:jackson-annotations")
+    implementation ("com.fasterxml.jackson.core:jackson-core")
+
 }
 
 tasks.withType<Test> {

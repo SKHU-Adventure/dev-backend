@@ -43,3 +43,6 @@ out/
 *.iml
 out
 gen
+
+# Ignore env file in imgtransformation directory
+fastapi/domain/imgtransformation/.env
