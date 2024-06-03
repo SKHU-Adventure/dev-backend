@@ -19,7 +19,6 @@ import com.example.modelapi.repository.ImageRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ImageTransformationService {
@@ -55,8 +54,8 @@ public class ImageTransformationService {
                     .map(output -> {
                         try {
                             String imageUrl = output.get(0);
-                            String imageId = UUID.randomUUID().toString();  // 생성된 image_id
-                            saveImageToDatabase(userId, imageUrl);
+                            int imageNumber = getNextImageNumber(userId);  // 사용자별 이미지 번호 생성
+                            saveImageToDatabase(userId, imageNumber, imageUrl);
                             return imageUrl;
                         } catch (Exception e) {
                             throw new RuntimeException("Failed to process image URL", e);
@@ -68,9 +67,14 @@ public class ImageTransformationService {
         }
     }
 
-    private void saveImageToDatabase(Long userId, String imageUri) {
+    private int getNextImageNumber(Long userId) {
+        return imageRepository.countByUserId(userId) + 1;  // 사용자별 이미지 번호 증가
+    }
+
+    private void saveImageToDatabase(Long userId, int imageNumber, String imageUri) {
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setUserId(userId);
+        imageEntity.setImageNumber(imageNumber);
         imageEntity.setImageUri(imageUri);
         imageRepository.save(imageEntity);
     }
