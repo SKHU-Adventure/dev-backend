@@ -4,8 +4,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/skhu_adventure?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
-    username: user1
-    password: skhuA+4.5
+    username: ##
+    password: ##
   jpa:
     hibernate:
       naming:
