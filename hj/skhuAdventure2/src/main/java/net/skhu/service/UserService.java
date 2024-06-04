@@ -27,20 +27,4 @@ public class UserService {
 
 
 
-//    public void updateName(String email, String name) {
-//        UserEntity userEntity = userRepository.findByEmail(email);
-//        if (userEntity != null) {
-//            userEntity.setName(name);
-//            userRepository.save(userEntity);
-//        }
-//    }
-
-//    public void changePassword(String email, String newPassword) {
-//        UserEntity userEntity = userRepository.findByEmail(email);
-//        if (userEntity != null) {
-//            userEntity.setPw(newPassword);
-//            userRepository.save(userEntity);
-//        }
-//    }
-
 }
