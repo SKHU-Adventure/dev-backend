@@ -2,8 +2,8 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+!mj/skhuAdventure/src/main/**/build/
+!mj/skhuAdventure/src/test/**/build/
 
 ### STS ###
 .apt_generated
@@ -14,8 +14,8 @@ build/
 .springBeans
 .sts4-cache
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+!mj/skhuAdventure/src/main/**/bin/
+!mj/skhuAdventure/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea
@@ -23,8 +23,8 @@ bin/
 *.iml
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+!mj/skhuAdventure/src/main/**/out/
+!mj/skhuAdventure/src/test/**/out/
 
 ### NetBeans ###
 /nbproject/private/
