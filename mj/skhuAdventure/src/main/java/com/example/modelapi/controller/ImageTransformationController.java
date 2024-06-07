@@ -20,10 +20,10 @@ public class ImageTransformationController {
     }
 
     @PostMapping("/transform")
-    public ResponseEntity<String> transformImage(@RequestParam("user_id") Long userId,
+    public ResponseEntity<String> transformImage(@RequestParam("user_email") String userEmail,
                                                  @RequestParam("image") MultipartFile image) {
         try {
-            String imageUrl = imageTransformationService.transformImage(userId, image);
+            String imageUrl = imageTransformationService.transformImage(userEmail, image);
             return ResponseEntity.ok(imageUrl);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Image transformation failed: " + e.getMessage());
