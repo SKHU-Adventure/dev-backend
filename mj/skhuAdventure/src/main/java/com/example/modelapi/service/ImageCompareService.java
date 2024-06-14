@@ -28,14 +28,13 @@ public class ImageCompareService {
     }
 
     public int compareImage(MultipartFile image, String buildingNumber) throws IOException {
-        String url = fastServerUrl + COMPARE_IMAGES_ENDPOINT;
+        String url = fastServerUrl + COMPARE_IMAGES_ENDPOINT + "?building_number=" + buildingNumber;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("image", new MultipartInputStreamFileResource(image.getInputStream(), image.getOriginalFilename()));
-        body.add("buildingNumber", buildingNumber);
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 

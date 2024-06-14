@@ -28,7 +28,7 @@ public class ImageTransformationService {
     private final RestTemplate restTemplate;
     private final ImageRepository imageRepository;
 
-    private static final String TRANSFORM_IMAGE_ENDPOINT = "/model/transfer/";
+    private static final String TRANSFORM_IMAGE_ENDPOINT = "/model/transform/";
 
     public ImageTransformationService(RestTemplate restTemplate, ImageRepository imageRepository) {
         this.restTemplate = restTemplate;

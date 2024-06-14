@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
-    int countByUserEmail(String userEmail);//UserId로 imagenumber 갱신할거임
+    int countByUserEmail(String userEmail);
 }
