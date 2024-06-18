@@ -1,7 +1,7 @@
 from fastapi import File, UploadFile, APIRouter, HTTPException
 import torch
 from torchvision import transforms
-from PIL import Image
+from PIL import Image, ExifTags
 import io
 import os
 from .utils.util_model import EmbedNet, TripletNet
@@ -28,8 +28,36 @@ def load_model():
 
     return triplet_net, preprocess
 
+def correct_image_orientation(image):
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = image._getexif()
+        if exif is not None:
+            exif = dict(exif.items())
+            orientation = exif.get(orientation)
+            if orientation == 2:
+                image = image.transpose(Image.FLIP_LEFT_RIGHT)
+            elif orientation == 3:
+                image = image.rotate(180, expand=True)
+            elif orientation == 4:
+                image = image.transpose(Image.FLIP_TOP_BOTTOM)
+            elif orientation == 5:
+                image = image.transpose(Image.FLIP_LEFT_RIGHT).rotate(270, expand=True)
+            elif orientation == 6:
+                image = image.rotate(270, expand=True)
+            elif orientation == 7:
+                image = image.transpose(Image.FLIP_LEFT_RIGHT).rotate(90, expand=True)
+            elif orientation == 8:
+                image = image.rotate(90, expand=True)
+    except Exception as e:
+        print(f"Error correcting image orientation: {e}")
+    return image
+
 def prepare_image(image_file):
     image = Image.open(io.BytesIO(image_file)).convert('RGB')
+    image = correct_image_orientation(image)
     image = preprocess(image)
     image = image.unsqueeze(0)
     return image
@@ -54,6 +82,20 @@ def load_building_images():
         building_images[number] = prepare_image(image)
     return building_images
 
+def print_exif_data(image_file):
+    image = Image.open(io.BytesIO(image_file))
+    exif_data = image._getexif()
+    if exif_data:
+        exif = {
+            ExifTags.TAGS.get(tag): value
+            for tag, value in exif_data.items()
+            if tag in ExifTags.TAGS
+        }
+        for key, value in exif.items():
+            print(f"{key}: {value}")
+    else:
+        print("No EXIF data found.")
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model, preprocess = load_model()
 building_images = load_building_images()
@@ -68,6 +110,9 @@ async def compare_image_with_building(building_number: str, image: UploadFile = 
         building_image_tensor = building_images.get(building_number)
         if building_image_tensor is None:
             raise HTTPException(status_code=404, detail=f"Building image with number {building_number} not found.")
+        
+        print_exif_data(img1)  # Print EXIF data for debugging
+
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error processing request: {e}")
 
