@@ -35,7 +35,7 @@ public class ImageTransformationService {
         this.imageRepository = imageRepository;
     }
 
-    public String transformImage(String userEmail, MultipartFile image) throws IOException {
+    public String transformImage(int userId, MultipartFile image) throws IOException {
         String url = fastServerUrl + TRANSFORM_IMAGE_ENDPOINT;
 
         HttpHeaders headers = new HttpHeaders();
@@ -54,8 +54,8 @@ public class ImageTransformationService {
                     .map(output -> {
                         try {
                             String imageUrl = output.get(0);
-                            int imageNumber = getNextImageNumber(userEmail);  // 사용자별 이미지 번호 생성
-                            saveImageToDatabase(userEmail, imageNumber, imageUrl);
+                            int imageNumber = getNextImageNumber(userId);  // 사용자별 이미지 번호 생성
+                            saveImageToDatabase(userId, imageNumber, imageUrl);
                             return imageUrl;
                         } catch (Exception e) {
                             throw new RuntimeException("Failed to process image URL", e);
@@ -67,13 +67,13 @@ public class ImageTransformationService {
         }
     }
 
-    private int getNextImageNumber(String userEmail) {
-        return imageRepository.countByUserEmail(userEmail) + 1;  // 사용자별 이미지 번호 증가
+    private int getNextImageNumber(int userId) {
+        return imageRepository.countByUserId(userId) + 1;  // 사용자별 이미지 번호 증가
     }
 
-    private void saveImageToDatabase(String userEmail, int imageNumber, String imageUri) {
+    private void saveImageToDatabase(int userId, int imageNumber, String imageUri) {
         ImageEntity imageEntity = new ImageEntity();
-        imageEntity.setUserEmail(userEmail);
+        imageEntity.setUserId(userId);
         imageEntity.setImageNumber(imageNumber);
         imageEntity.setImageUri(imageUri);
         imageRepository.save(imageEntity);
