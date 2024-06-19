@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: skhuAdventure
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/skhu_adventure?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
+    username: user1
+    password: skhuA+4.5
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: DEBUG
+      type:
+        descriptor:
+          sql:
+            BasicBinder: TRACE
+
+server:
+  port: 8088
+
+fast:
+  server:
+    url: http://localhost:8000
