@@ -20,7 +20,7 @@ public class ImageTransformationController {
     }
 
     @PostMapping("/transform")
-    public ResponseEntity<String> transformImage(@RequestParam("userId") int userId,
+    public ResponseEntity<String> transformImage(@RequestParam("userId") String userId,
                                                  @RequestParam("image") MultipartFile image) {
         try {
             String imageUrl = imageTransformationService.transformImage(userId, image);

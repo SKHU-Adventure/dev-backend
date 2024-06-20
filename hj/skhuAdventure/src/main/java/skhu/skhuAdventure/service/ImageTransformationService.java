@@ -13,7 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import skhu.skhuAdventure.entity.ImageEntity; // ImageEntity 클래스 임포트
+import skhu.skhuAdventure.entity.ImageEntity;
 import skhu.skhuAdventure.repository.ImageRepository;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class ImageTransformationService {
         this.imageRepository = imageRepository;
     }
 
-    public String transformImage(int userId, MultipartFile image) throws IOException {
+    public String transformImage(String userId, MultipartFile image) throws IOException {
         String url = fastServerUrl + TRANSFORM_IMAGE_ENDPOINT;
 
         HttpHeaders headers = new HttpHeaders();
@@ -67,11 +67,11 @@ public class ImageTransformationService {
         }
     }
 
-    private int getNextImageNumber(int userId) {
+    private int getNextImageNumber(String userId) {
         return imageRepository.countByUserId(userId) + 1;  // 사용자별 이미지 번호 증가
     }
 
-    private void saveImageToDatabase(int userId, int imageNumber, String imageUri) {
+    private void saveImageToDatabase(String userId, int imageNumber, String imageUri) {
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setUserId(userId);
         imageEntity.setImageNumber(imageNumber);
