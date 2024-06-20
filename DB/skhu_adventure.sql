@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.37, for Win64 (x86_64)
 --
 -- Host: localhost    Database: skhu_adventure
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `image` (
-     `id` int NOT NULL AUTO_INCREMENT,
-     `userId` bigint DEFAULT NULL,
-     `imageNumber` bigint DEFAULT NULL,
-     `uri` varchar(300) DEFAULT NULL,
-     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` varchar(100) DEFAULT NULL,
+  `imageNumber` bigint DEFAULT NULL,
+  `imageUri` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,6 +37,7 @@ CREATE TABLE `image` (
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
+INSERT INTO `image` VALUES (1,'1',1,'https://replicate.delivery/czjl/7EsfB1g9aox3byBVPqss8Nm21ObVczUcBCKWZBKrWqw1MEgJA/out-0.png'),(2,'1',2,'https://replicate.delivery/czjl/6smFdvzadqp6HFkZAv0oyqZeW3BT3hsAIbOBFEsbfeSOIRAmA/out-0.png'),(3,'1',3,'https://replicate.delivery/czjl/gm1Dp7Pp3V71B9CAjL6EWgHAIZ50AfqfrNRl04KHd2MeYqAmA/out-0.png');
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,10 +67,6 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'John Doe','john.doe@example.com','password123',100);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'skhu_adventure'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -80,4 +77,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-03 19:42:55
+-- Dump completed on 2024-06-20 12:32:49
