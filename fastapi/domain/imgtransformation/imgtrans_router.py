@@ -5,10 +5,8 @@ from PIL import Image
 import io
 from dotenv import load_dotenv
 
-#env파일 같은 디렉토리에 둬야함
+# env파일 같은 디렉토리에 둬야함
 load_dotenv()
-
-
 
 router = APIRouter(
     prefix="/model",
@@ -19,17 +17,25 @@ if not api_token:
     raise ValueError("REPLICATE_API_TOKEN is not set in environment variables")
 client = replicate.Client(api_token=api_token)
 
-
 @router.post("/transform/")
 async def image_transfer(file: UploadFile = File(...)):
     try:
         image = Image.open(io.BytesIO(await file.read()))
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error reading files: {e}")
-    image = image.resize((512, 512)) #추후에 512보다 원래 작은 경우는 그대로 하거나 256x256으로 전처리하는 코드 추가
+
+    # Convert image to JPEG if not already in JPEG format
+    if image.format != 'JPEG':
+        image = image.convert('RGB')
+
+    # Resize image to be at most 512x512 while maintaining aspect ratio
+    max_size = (512, 512)
+    image.thumbnail(max_size)
+
     img_byte_arr = io.BytesIO()
     image.save(img_byte_arr, format='JPEG')
     img_byte_arr.seek(0)
+
     output = client.run(
         "mcai/edge-of-realism-v2.0-img2img:0f7ba6926ca1e836e6dc64cf7e371402c9a4915851234378319f9b9b0f968fda",
         input={
@@ -45,6 +51,3 @@ async def image_transfer(file: UploadFile = File(...)):
         }
     )
     return {"output": output}
-    
-        
-
