@@ -22,7 +22,7 @@ logging:
             BasicBinder: TRACE
 
 server:
-  port: 8088
+  port: 8080
 
 fast:
   server:
