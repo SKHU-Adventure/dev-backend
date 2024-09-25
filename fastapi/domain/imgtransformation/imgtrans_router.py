@@ -47,7 +47,7 @@ async def image_transfer(file: UploadFile = File(...)):
             "num_outputs": 1,
             "guidance_scale": 7.5,
             "negative_prompt": "disfigured, kitsch, ugly, oversaturated, greain, low-res, Deformed, blurry, bad anatomy, disfigured, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, blurry, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, long body, ugly, disgusting, poorly drawn, childish, mutilated, mangled, old, surreal, calligraphy, sign, writing, watermark, text, body out of frame, extra legs, extra arms, extra feet, out of frame, poorly drawn feet, cross-eye, blurry, bad anatomy",
-            "num_inference_steps": 30
+            "num_inference_steps": 25
         }
     )
     return {"output": output}
