@@ -46,3 +46,6 @@ gen
 
 # Ignore env file in imgtransformation directory
 fastapi/domain/imgtransformation/.env
+fastapi/domain/placerecognition/utils/buildingimg
+fastapi/domain/placerecognition/models/last.ckpt
+**/__pycache__/
