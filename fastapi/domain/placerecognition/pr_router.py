@@ -1,8 +1,8 @@
 import io
 import os
 
-from utils.util_model import LightningTripletNet
-from utils.util_function import correct_image_orientation
+from .utils.util_model import LightningTripletNet
+from .utils.util_function import correct_image_orientation
 
 from fastapi import File, UploadFile, APIRouter, HTTPException
 import torch
@@ -12,7 +12,7 @@ from PIL import Image, ExifTags
 
 #0.94로 검사
 def load_model():
-    triplet_net = LightningTripletNet.load_from_checkpoint("C:\\Users\\user\\Desktop\\PR\\backend\\model_api_최종\\fastapi\\domain\\placerecognition\\models\\last.ckpt", strict=False)
+    triplet_net = LightningTripletNet.load_from_checkpoint("C:\\Users\\user\\Desktop\\PR\\backend\\model_api_최종\\fastapi\\domain\\placerecognition\\utils\\models\\last.ckpt", strict=False)
 
     preprocess = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -34,12 +34,15 @@ def load_building_images():
     building_numbers = {
         '1': '구두',
         '2': '새천',
+        '3': '학관',
         '4': '승연관',
         '5': '미카정보',
         '6': '중도',
+        '7': '월당',
         '8': '일만'
     }
-    base_path = 'C:/Users/user/Desktop/PR/backend/model-api/fastapi/domain/placerecognition/utils/buildingimg/'
+    base_path = 'C:\\Users\\user\\Desktop\\PR\\backend\\model_api_최종\\fastapi\\domain\\placerecognition\\utils\\buildingimg\\'
+    
     for number, name in building_numbers.items():
         image_path = os.path.join(base_path, f'{name}.jpg')
         if not os.path.exists(image_path):
