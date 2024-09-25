@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from domain.placerecognition import pr_router
