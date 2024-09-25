@@ -1,59 +1,26 @@
+import io
+import os
+
+from utils.util_model import LightningTripletNet
+from utils.util_function import correct_image_orientation
+
 from fastapi import File, UploadFile, APIRouter, HTTPException
 import torch
 from torchvision import transforms
 from PIL import Image, ExifTags
-import io
-import os
-from .utils.util_model import EmbedNet, TripletNet
-from .backbones import get_backbone
-from .models import get_model
 
+
+#0.94로 검사
 def load_model():
-    backbone = get_backbone('resnet18')
-    model = get_model('netvlad')
-    embed_net = EmbedNet(backbone, model)
-    triplet_net = TripletNet(embed_net).to(device)
-    checkpoint = torch.load('C:/Users/user/Desktop/PR/backend/model-api/fastapi/domain/placerecognition/models/resnet18_netvlad_nordland_checkpoint_e10.pth', map_location=device)
-    new_state_dict = {key.replace('module.', ''): value for key, value in checkpoint.items()}
-    triplet_net.load_state_dict(new_state_dict, strict=False)
-    triplet_net.eval()
-    for param in triplet_net.parameters():
-        param.requires_grad = False
+    triplet_net = LightningTripletNet.load_from_checkpoint("C:\\Users\\user\\Desktop\\PR\\backend\\model_api_최종\\fastapi\\domain\\placerecognition\\models\\last.ckpt", strict=False)
 
     preprocess = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-
+    triplet_net.eval()
     return triplet_net, preprocess
-
-def correct_image_orientation(image):
-    try:
-        for orientation in ExifTags.TAGS.keys():
-            if ExifTags.TAGS[orientation] == 'Orientation':
-                break
-        exif = image._getexif()
-        if exif is not None:
-            exif = dict(exif.items())
-            orientation = exif.get(orientation)
-            if orientation == 2:
-                image = image.transpose(Image.FLIP_LEFT_RIGHT)
-            elif orientation == 3:
-                image = image.rotate(180, expand=True)
-            elif orientation == 4:
-                image = image.transpose(Image.FLIP_TOP_BOTTOM)
-            elif orientation == 5:
-                image = image.transpose(Image.FLIP_LEFT_RIGHT).rotate(270, expand=True)
-            elif orientation == 6:
-                image = image.rotate(270, expand=True)
-            elif orientation == 7:
-                image = image.transpose(Image.FLIP_LEFT_RIGHT).rotate(90, expand=True)
-            elif orientation == 8:
-                image = image.rotate(90, expand=True)
-    except Exception as e:
-        print(f"Error correcting image orientation: {e}")
-    return image
 
 def prepare_image(image_file):
     image = Image.open(io.BytesIO(image_file)).convert('RGB')
@@ -118,7 +85,7 @@ async def compare_image_with_building(building_number: str, image: UploadFile = 
 
     img1_tensor = prepare_image(img1).to(device)
 
-    model.eval()
+    
     with torch.no_grad():
         features1 = model.feature_extract(img1_tensor)
         features2 = model.feature_extract(building_image_tensor.to(device))
@@ -128,7 +95,7 @@ async def compare_image_with_building(building_number: str, image: UploadFile = 
             features1 = torch.nn.functional.adaptive_avg_pool2d(features1, (1, 1)).view(features1.size(0), -1)
             features2 = torch.nn.functional.adaptive_avg_pool2d(features2, (1, 1)).view(features2.size(0), -1)
 
-    distance = torch.nn.functional.pairwise_distance(features1, features2)
+    distance =  torch.nn.functional.pairwise_distance(features1, features2)
 
-    is_similar = 1 if distance.item() < 1 else 0
+    is_similar = 1 if distance.item() < 0.94 else 0
     return is_similar
