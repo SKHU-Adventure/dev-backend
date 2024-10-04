@@ -18,5 +18,8 @@
 ## 화면 설계
 ![KakaoTalk_20241004_100150167](https://github.com/user-attachments/assets/a2334004-aff1-4d9e-bdf5-410b8198c5e9)
 
+### <화면 구성>
+![설명PAGE](https://github.com/user-attachments/assets/439fa4a2-1637-4811-9122-488e2b831fe7)
+
 ## 프로젝트 DB ERD
 ![erd](https://github.com/user-attachments/assets/f77087d9-097c-486f-9372-885e44e4f03d)
